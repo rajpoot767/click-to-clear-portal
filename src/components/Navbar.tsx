@@ -82,9 +82,9 @@ const Navbar = () => {
         <div className="container mx-auto px-4">
           <div className="flex overflow-x-auto scrollbar-hide">
             <Link to="/" className="px-4 py-3 whitespace-nowrap font-medium text-gray-900 border-b-2 border-blue-500">Latest News</Link>
-            <Link to="/" className="px-4 py-3 whitespace-nowrap text-gray-600 hover:text-gray-900">Resources</Link>
-            <Link to="/" className="px-4 py-3 whitespace-nowrap text-gray-600 hover:text-gray-900">Property</Link>
-            <Link to="/" className="px-4 py-3 whitespace-nowrap text-gray-600 hover:text-gray-900">Commercial Content</Link>
+            <Link to="/category/resources" className="px-4 py-3 whitespace-nowrap text-gray-600 hover:text-gray-900">Resources</Link>
+            <Link to="/category/property" className="px-4 py-3 whitespace-nowrap text-gray-600 hover:text-gray-900">Property</Link>
+            <Link to="/category/commercial" className="px-4 py-3 whitespace-nowrap text-gray-600 hover:text-gray-900">Commercial Content</Link>
             
             {/* All Categories dropdown */}
             <div className="px-4 py-3 whitespace-nowrap text-gray-600 hover:text-gray-900">
@@ -93,7 +93,7 @@ const Navbar = () => {
                   All Categories
                   <ChevronDown size={16} />
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-48">
+                <DropdownMenuContent align="start" className="w-48 bg-white">
                   {categories.map((category) => (
                     <DropdownMenuItem key={category}>
                       <Link to={`/category/${category.toLowerCase()}`} className="w-full">
@@ -105,7 +105,7 @@ const Navbar = () => {
               </DropdownMenu>
             </div>
             
-            <Link to="/" className="px-4 py-3 whitespace-nowrap text-white bg-blue-500 hover:bg-blue-600 ml-auto">Data & Insights</Link>
+            <Link to="/category/data-insights" className="px-4 py-3 whitespace-nowrap text-white bg-blue-500 hover:bg-blue-600 ml-auto">Data & Insights</Link>
           </div>
         </div>
       </div>
