@@ -1,35 +1,15 @@
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Sun, Moon } from "lucide-react";
+import { useTheme } from "@/components/ThemeProvider";
 
 const ThemeToggle = () => {
-  // Check if we're in browser environment to avoid SSR issues
-  const [mounted, setMounted] = useState(false);
-  const [theme, setTheme] = useState<'light' | 'dark'>(
-    localStorage.getItem('theme') as 'light' | 'dark' || 'light'
-  );
-  
-  // Set mounted state once component mounts
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-  
-  useEffect(() => {
-    if (!mounted) return;
-    
-    const root = window.document.documentElement;
-    root.classList.remove('light', 'dark');
-    root.classList.add(theme);
-    localStorage.setItem('theme', theme);
-  }, [theme, mounted]);
+  const { theme, setTheme } = useTheme();
   
   const toggleTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light');
   };
-
-  // Don't render anything until component is mounted to avoid hydration mismatch
-  if (!mounted) return null;
 
   return (
     <Button 
@@ -40,7 +20,7 @@ const ThemeToggle = () => {
       aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
     >
       {theme === 'light' ? (
-        <Moon size={20} className="text-gray-600 hover:text-gray-900 transition-colors" />
+        <Moon size={20} className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors" />
       ) : (
         <Sun size={20} className="text-yellow-300 hover:text-yellow-500 transition-colors" />
       )}
