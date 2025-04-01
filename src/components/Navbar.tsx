@@ -1,13 +1,17 @@
 
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Search, ChevronDown } from "lucide-react";
+import { Search, ChevronDown, User } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import SearchModal from "./SearchModal";
+import AuthModal from "./AuthModal";
+import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,7 +20,7 @@ const Navbar = () => {
   const categories = [
     "Business",
     "Finance",
-    "Technology",
+    "Technology", 
     "Property",
     "Mining",
     "Energy",
@@ -39,10 +43,17 @@ const Navbar = () => {
           </div>
           <div className="flex gap-4 items-center">
             <Link to="/" className="text-sm hover:underline">Subscribe</Link>
-            <Link to="/" className="text-sm hover:underline">MyBN</Link>
-            <Link to="/" className="text-sm hover:underline flex items-center gap-1">
-              <span>Log In</span>
-            </Link>
+            <div className="flex items-center gap-2">
+              <AuthModal 
+                trigger={
+                  <Button variant="ghost" size="sm" className="text-white hover:text-white">
+                    <User size={16} className="mr-1" />
+                    <span className="text-sm">Login</span>
+                  </Button>
+                } 
+              />
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       </div>
@@ -63,16 +74,22 @@ const Navbar = () => {
           </div>
           
           <div className="relative w-80">
-            <div className="flex items-center border rounded-md">
-              <span className="absolute right-3">
-                <Search size={20} className="text-gray-400" />
-              </span>
-              <input 
-                type="text" 
-                placeholder="News, people, companies, projects..." 
-                className="w-full px-4 py-2 pr-10 text-sm border-none focus:outline-none focus:ring-0"
-              />
-            </div>
+            <SearchModal
+              trigger={
+                <div className="flex items-center border rounded-md cursor-pointer">
+                  <span className="absolute right-3">
+                    <Search size={20} className="text-gray-400" />
+                  </span>
+                  <input 
+                    type="text" 
+                    placeholder="News, people, companies, projects..." 
+                    className="w-full px-4 py-2 pr-10 text-sm border-none focus:outline-none focus:ring-0 cursor-pointer"
+                    onClick={(e) => e.preventDefault()}
+                    readOnly
+                  />
+                </div>
+              }
+            />
           </div>
         </div>
       </div>
