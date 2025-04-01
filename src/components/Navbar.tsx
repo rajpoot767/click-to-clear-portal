@@ -1,9 +1,33 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Search } from "lucide-react";
+import { Search, ChevronDown } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Categories for dropdown
+  const categories = [
+    "Business",
+    "Finance",
+    "Technology",
+    "Property",
+    "Mining",
+    "Energy",
+    "Agriculture",
+    "Tourism",
+    "Health",
+    "Education",
+    "Politics",
+    "Sports",
+  ];
+
   return (
     <>
       {/* Top navigation bar */}
@@ -61,7 +85,26 @@ const Navbar = () => {
             <Link to="/" className="px-4 py-3 whitespace-nowrap text-gray-600 hover:text-gray-900">Resources</Link>
             <Link to="/" className="px-4 py-3 whitespace-nowrap text-gray-600 hover:text-gray-900">Property</Link>
             <Link to="/" className="px-4 py-3 whitespace-nowrap text-gray-600 hover:text-gray-900">Commercial Content</Link>
-            <Link to="/" className="px-4 py-3 whitespace-nowrap text-gray-600 hover:text-gray-900">All Categories</Link>
+            
+            {/* All Categories dropdown */}
+            <div className="px-4 py-3 whitespace-nowrap text-gray-600 hover:text-gray-900">
+              <DropdownMenu>
+                <DropdownMenuTrigger className="flex items-center gap-1 focus:outline-none">
+                  All Categories
+                  <ChevronDown size={16} />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-48">
+                  {categories.map((category) => (
+                    <DropdownMenuItem key={category}>
+                      <Link to={`/category/${category.toLowerCase()}`} className="w-full">
+                        {category}
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+            
             <Link to="/" className="px-4 py-3 whitespace-nowrap text-white bg-blue-500 hover:bg-blue-600 ml-auto">Data & Insights</Link>
           </div>
         </div>
