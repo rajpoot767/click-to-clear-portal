@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -20,6 +19,7 @@ import {
   Tooltip, 
   ResponsiveContainer 
 } from "recharts";
+import Cell from "@/components/ui/cell";
 import { ArrowUpRight, ArrowDownRight, TrendingUp, Activity } from "lucide-react";
 
 // Mock market data
@@ -41,7 +41,7 @@ const generateMockData = (days = 30, baseValue = 100, volatility = 5) => {
     value += change;
     data.push({
       date: new Date(Date.now() - (days - i) * 86400000).toLocaleDateString(),
-      value: Math.max(0, value.toFixed(2)),
+      value: Math.max(0, Number(value.toFixed(2))),
     });
   }
   
