@@ -5,6 +5,7 @@ import NewsCard from "@/components/NewsCard";
 import StockTicker from "@/components/StockTicker";
 import WeatherWidget from "@/components/WeatherWidget";
 import NewsletterForm from "@/components/NewsletterForm";
+import MarketIndicatorsDashboard from "@/components/MarketIndicatorsDashboard";
 import { Button } from "@/components/ui/button";
 import { Search, TrendingUp } from "lucide-react";
 
@@ -101,6 +102,10 @@ const Index = () => {
       <StockTicker />
       
       <main className="container mx-auto px-4 py-8">
+        <div className="mb-8">
+          <MarketIndicatorsDashboard />
+        </div>
+        
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Main content area - 3/4 width on desktop */}
           <div className="lg:col-span-3">
