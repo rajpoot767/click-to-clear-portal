@@ -1,6 +1,12 @@
 
 import React from "react";
+import { Link } from "react-router-dom";
 import NewsCard from "@/components/NewsCard";
+import StockTicker from "@/components/StockTicker";
+import WeatherWidget from "@/components/WeatherWidget";
+import NewsletterForm from "@/components/NewsletterForm";
+import { Button } from "@/components/ui/button";
+import { Search, TrendingUp } from "lucide-react";
 
 const Index = () => {
   // Mock data for news articles based on the BusinessNews website
@@ -70,24 +76,134 @@ const Index = () => {
       hoursAgo: 9
     }
   ];
+  
+  // Most read articles
+  const mostReadArticles = [
+    {
+      id: "most-1",
+      title: "Global market trends show recovery signs",
+      views: 5280
+    },
+    {
+      id: "most-2",
+      title: "New regulations impact tech industry",
+      views: 4320
+    },
+    {
+      id: "most-3",
+      title: "Renewable energy investments surge",
+      views: 3690
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
+      <StockTicker />
+      
       <main className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">Latest Headlines</h1>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {newsArticles.map((article, index) => (
-            <NewsCard 
-              key={index}
-              title={article.title}
-              description={article.description}
-              imageUrl={article.imageUrl}
-              category={article.category}
-              url={article.url}
-              hoursAgo={article.hoursAgo}
-            />
-          ))}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Main content area - 3/4 width on desktop */}
+          <div className="lg:col-span-3">
+            <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">Latest Headlines</h1>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              {newsArticles.slice(0, 6).map((article, index) => (
+                <NewsCard 
+                  key={index}
+                  title={article.title}
+                  description={article.description}
+                  imageUrl={article.imageUrl}
+                  category={article.category}
+                  url={article.url}
+                  hoursAgo={article.hoursAgo}
+                />
+              ))}
+            </div>
+            
+            <div className="flex justify-center mb-12">
+              <Button asChild variant="outline">
+                <Link to="/category/all">View All Articles</Link>
+              </Button>
+            </div>
+            
+            <div className="mb-10">
+              <div className="flex items-center mb-4">
+                <TrendingUp className="mr-2 text-blue-600" size={24} />
+                <h2 className="text-2xl font-bold">Trending Topics</h2>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {["Business", "Finance", "Technology", "Energy", "Real Estate", "Industry", "Economy", "Market Analysis", "Innovation", "Sustainability"].map((tag) => (
+                  <Link 
+                    key={tag} 
+                    to={`/category/${tag.toLowerCase()}`}
+                    className="bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 px-3 py-1 rounded-full"
+                  >
+                    #{tag}
+                  </Link>
+                ))}
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              {newsArticles.slice(6, 8).map((article, index) => (
+                <NewsCard 
+                  key={index}
+                  title={article.title}
+                  description={article.description}
+                  imageUrl={article.imageUrl}
+                  category={article.category}
+                  url={article.url}
+                  hoursAgo={article.hoursAgo}
+                />
+              ))}
+            </div>
+          </div>
+          
+          {/* Sidebar - 1/4 width on desktop */}
+          <div className="space-y-6">
+            <div className="relative">
+              <div className="relative rounded-lg overflow-hidden">
+                <Link to="/search">
+                  <Button className="w-full flex items-center justify-center gap-2" variant="outline">
+                    <Search size={20} />
+                    <span>Search News...</span>
+                  </Button>
+                </Link>
+              </div>
+            </div>
+            
+            <WeatherWidget />
+            
+            <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+              <h3 className="font-bold text-lg mb-3">Most Read</h3>
+              <div className="space-y-4">
+                {mostReadArticles.map((article, index) => (
+                  <Link key={index} to={`/news/${article.id}`}>
+                    <div className="group">
+                      <div className="font-medium group-hover:text-blue-600 transition-colors">
+                        {article.title}
+                      </div>
+                      <div className="text-sm text-gray-500">
+                        {article.views.toLocaleString()} views
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+            
+            <NewsletterForm />
+            
+            <div className="bg-blue-600 text-white p-4 rounded-lg">
+              <h3 className="font-bold text-lg mb-2">Premium Access</h3>
+              <p className="text-sm mb-4">
+                Get unlimited access to exclusive content, detailed analysis, and premium features.
+              </p>
+              <Button variant="secondary" size="sm" className="w-full">
+                Subscribe Now
+              </Button>
+            </div>
+          </div>
         </div>
       </main>
     </div>
