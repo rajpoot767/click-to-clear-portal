@@ -3,8 +3,8 @@ import React from "react";
 import { Cell as RechartsCell } from "recharts";
 
 interface CellProps {
-  fill: string;
-  key: string;
+  fill?: string;
+  key: string | number;
 }
 
 const Cell: React.FC<CellProps> = ({ fill, key }) => {

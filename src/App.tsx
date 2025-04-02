@@ -13,6 +13,7 @@ import CategoryPage from "./pages/CategoryPage";
 import ArticlePage from "./pages/ArticlePage";
 import NewsArticlePage from "./pages/NewsArticlePage";
 import ProfilePage from "./pages/ProfilePage";
+import DataInsights from "./pages/DataInsights";
 import BreakingNewsBanner from "./components/BreakingNewsBanner";
 
 const queryClient = new QueryClient();
@@ -35,6 +36,7 @@ const App = () => (
                   <Route path="/article/:id" element={<ArticlePage />} />
                   <Route path="/news/:id" element={<NewsArticlePage />} />
                   <Route path="/profile" element={<ProfilePage />} />
+                  <Route path="/data-insights" element={<DataInsights />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
