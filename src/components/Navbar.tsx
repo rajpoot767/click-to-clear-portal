@@ -42,7 +42,7 @@ const Navbar = () => {
             <Link to="/" className="text-sm hover:underline">Events</Link>
           </div>
           <div className="flex gap-4 items-center">
-            <Link to="/" className="text-sm hover:bg-blue-600 hover:text-white px-2 py-1 rounded-md transition-colors">Subscribe</Link>
+            <Link to="/" className="text-sm bg-blue-500 text-white hover:bg-blue-600 hover:text-white px-3 py-1 rounded-md transition-colors">Subscribe</Link>
             <div className="flex items-center gap-2">
               <AuthModal 
                 trigger={
