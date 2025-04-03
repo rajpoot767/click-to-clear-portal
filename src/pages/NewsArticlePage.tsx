@@ -1,19 +1,18 @@
 
 import React, { useEffect, useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Bookmark, Share2, Play, Pause, Volume2, TrendingUp } from "lucide-react";
+import { useParams, useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { HoverCard, HoverCardTrigger, HoverCardContent } from "@/components/ui/hover-card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useBookmarks } from "@/contexts/BookmarkContext";
-import ArticleRating from "@/components/ArticleRating";
-import SocialShareButtons from "@/components/SocialShareButtons";
-import WeatherWidget from "@/components/WeatherWidget";
 import StockTicker from "@/components/StockTicker";
-import MarketIndicatorsDashboard from "@/components/MarketIndicatorsDashboard";
-import CategorySubscribeButton from "@/components/CategorySubscribeButton";
+
+// Imported refactored components
+import ArticleHeader from "@/components/article/ArticleHeader";
+import ArticleContent from "@/components/article/ArticleContent";
+import RelatedArticles from "@/components/article/RelatedArticles";
+import ArticleSidebar from "@/components/article/ArticleSidebar";
 
 const NewsArticlePage = () => {
   const { id } = useParams<{ id: string }>();
@@ -187,150 +186,29 @@ const NewsArticlePage = () => {
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="lg:w-2/3">
           <Card className="overflow-hidden border-gray-200 dark:border-gray-700">
-            <div className="relative">
-              <img 
-                src={article.imageUrl} 
-                alt={article.title} 
-                className="w-full h-64 object-cover"
-              />
-              <div className="absolute top-4 left-4 flex items-center gap-2">
-                <span className="bg-blue-600 text-white text-xs font-bold px-2 py-1 uppercase rounded">
-                  {article.category}
-                </span>
-                <CategorySubscribeButton category={article.category} className="bg-white/70 dark:bg-gray-800/70 hover:bg-white dark:hover:bg-gray-800" />
-              </div>
-            </div>
+            <ArticleHeader 
+              article={article}
+              isPlaying={isPlaying}
+              isBookmarked={isBookmarked}
+              handleBookmark={handleBookmark}
+              handleShare={handleShare}
+              toggleAudioPlayback={toggleAudioPlayback}
+            />
             
-            <CardContent className="p-6">
-              <div className="flex justify-between items-start mb-4">
-                <h1 className="text-3xl font-bold">{article.title}</h1>
-                
-                <div className="flex gap-2">
-                  <Button 
-                    variant="outline" 
-                    size="icon" 
-                    onClick={handleBookmark}
-                    className={isBookmarked(article.id) ? "text-blue-600" : ""}
-                  >
-                    <Bookmark size={18} className={isBookmarked(article.id) ? "fill-blue-600" : ""} />
-                  </Button>
-                  <Button variant="outline" size="icon" onClick={handleShare}>
-                    <Share2 size={18} />
-                  </Button>
-                  <Button variant="outline" size="icon" onClick={toggleAudioPlayback}>
-                    {isPlaying ? <Pause size={18} /> : <Play size={18} />}
-                  </Button>
-                </div>
-              </div>
-              
-              <div className="mb-4 text-gray-600 dark:text-gray-400">
-                <span>By {article.author}</span>
-                <span className="mx-2">•</span>
-                <span>{article.date}</span>
-              </div>
-              
-              {isPlaying && (
-                <div className="flex items-center gap-2 p-2 bg-blue-50 dark:bg-blue-900/30 rounded mb-4">
-                  <Volume2 size={16} className="text-blue-600 animate-pulse" />
-                  <span className="text-sm">Now playing audio version</span>
-                  <Button size="sm" variant="ghost" onClick={toggleAudioPlayback}>Stop</Button>
-                </div>
-              )}
-              
-              <SocialShareButtons url={window.location.href} title={article.title} />
-              
-              <div className="prose max-w-none dark:prose-invert">
-                <p className="text-xl font-medium mb-6">{article.description}</p>
-                
-                {article.content.split('\n\n').map((paragraph: string, index: number) => (
-                  <p key={index}>{paragraph}</p>
-                ))}
-              </div>
-              
-              <ArticleRating articleId={article.id} />
-              
-              {article.relatedArticles && article.relatedArticles.length > 0 && (
-                <div className="mt-12">
-                  <h2 className="text-2xl font-bold mb-4">Related Articles</h2>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {article.relatedArticles.map((related: any, index: number) => (
-                      <Link to={`/news/${related.id}`} key={index}>
-                        <div className="group border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
-                          <div className="h-32 overflow-hidden">
-                            <img 
-                              src={related.imageUrl} 
-                              alt={related.title}
-                              className="w-full h-full object-cover transition-transform group-hover:scale-105"
-                            />
-                          </div>
-                          <div className="p-3">
-                            <h3 className="font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400">
-                              {related.title}
-                            </h3>
-                          </div>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </CardContent>
+            <ArticleContent 
+              article={article}
+              isPlaying={isPlaying}
+              toggleAudioPlayback={toggleAudioPlayback}
+            />
+            
+            {article.relatedArticles && article.relatedArticles.length > 0 && (
+              <RelatedArticles articles={article.relatedArticles} />
+            )}
           </Card>
         </div>
         
         <div className="lg:w-1/3 space-y-6">
-          <Tabs defaultValue="widgets">
-            <TabsList className="w-full grid grid-cols-2">
-              <TabsTrigger value="widgets">Widgets</TabsTrigger>
-              <TabsTrigger value="markets">Markets</TabsTrigger>
-            </TabsList>
-            <TabsContent value="widgets" className="space-y-6 pt-4">
-              <WeatherWidget />
-              
-              <Card>
-                <CardContent className="p-4">
-                  <h3 className="font-bold mb-3">Popular Articles</h3>
-                  <div className="space-y-4">
-                    {[1, 2, 3, 4, 5].map((i) => (
-                      <div key={i} className="group">
-                        <Link to={`/news/${i}`} className="text-sm font-medium group-hover:text-blue-600">
-                          {i === 1 ? "Global market trends show recovery signs" : 
-                           i === 2 ? "New regulations impact tech industry" :
-                           i === 3 ? "Renewable energy investments surge" :
-                           i === 4 ? "Healthcare innovation leads to breakthrough" :
-                           "Financial experts predict interest rate changes"}
-                        </Link>
-                        <div className="text-xs text-gray-500 mt-1">
-                          {(2000 - (i * 300)).toLocaleString()} views
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-              
-              <Card>
-                <CardContent className="p-4">
-                  <h3 className="font-bold mb-3">Tags</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {["Mining", "Economy", "Business", "Finance", "Technology", "Energy", "Innovation"].map((tag) => (
-                      <Link 
-                        key={tag}
-                        to={`/category/${tag.toLowerCase()}`}
-                        className="bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 text-xs px-2 py-1 rounded-full"
-                      >
-                        #{tag}
-                      </Link>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-            
-            <TabsContent value="markets" className="pt-4">
-              <MarketIndicatorsDashboard />
-            </TabsContent>
-          </Tabs>
+          <ArticleSidebar />
         </div>
       </div>
     </div>
