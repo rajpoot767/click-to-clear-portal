@@ -6,7 +6,9 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { BookmarkProvider } from "./contexts/BookmarkContext";
-import Navbar from "./components/Navbar";
+import EnhancedNavbar from "./components/EnhancedNavbar";
+import ScrollToTop from "./components/ScrollToTop";
+import ReadingProgressBar from "./components/ReadingProgressBar";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import CategoryPage from "./pages/CategoryPage";
@@ -27,8 +29,9 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <div className="flex flex-col min-h-screen">
+              <ReadingProgressBar />
               <BreakingNewsBanner />
-              <Navbar />
+              <EnhancedNavbar />
               <main className="flex-grow">
                 <Routes>
                   <Route path="/" element={<Index />} />
@@ -37,10 +40,10 @@ const App = () => (
                   <Route path="/news/:id" element={<NewsArticlePage />} />
                   <Route path="/profile" element={<ProfilePage />} />
                   <Route path="/data-insights" element={<DataInsights />} />
-                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </main>
+              <ScrollToTop />
             </div>
           </BrowserRouter>
         </TooltipProvider>

@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import NewsCard from "@/components/NewsCard";
+import EnhancedNewsCard from "@/components/EnhancedNewsCard";
 import StockTicker from "@/components/StockTicker";
 import WeatherWidget from "@/components/WeatherWidget";
 import NewsletterForm from "@/components/NewsletterForm";
@@ -113,7 +113,7 @@ const Index = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
               {newsArticles.slice(0, 6).map((article, index) => (
-                <NewsCard 
+                <EnhancedNewsCard 
                   key={index}
                   title={article.title}
                   description={article.description}
@@ -151,7 +151,7 @@ const Index = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               {newsArticles.slice(6, 8).map((article, index) => (
-                <NewsCard 
+                <EnhancedNewsCard 
                   key={index}
                   title={article.title}
                   description={article.description}

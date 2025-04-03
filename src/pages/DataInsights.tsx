@@ -1,107 +1,189 @@
 
-import React from "react";
+import React, { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DataVisualization from "@/components/DataVisualization";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Download, Share2 } from "lucide-react";
+import NotificationSystem from "@/components/NotificationSystem";
+
+interface DataPoint {
+  name: string;
+  value: number;
+}
 
 const DataInsights = () => {
-  const economicGrowthData = [
-    { quarter: "Q1 2022", gdp: 2.3, unemployment: 5.7, inflation: 7.5 },
-    { quarter: "Q2 2022", gdp: 1.8, unemployment: 5.2, inflation: 8.2 },
-    { quarter: "Q3 2022", gdp: 0.9, unemployment: 4.9, inflation: 8.9 },
-    { quarter: "Q4 2022", gdp: 0.4, unemployment: 5.1, inflation: 7.8 },
-    { quarter: "Q1 2023", gdp: -0.2, unemployment: 5.4, inflation: 6.5 },
-    { quarter: "Q2 2023", gdp: -0.5, unemployment: 5.9, inflation: 5.7 },
-    { quarter: "Q3 2023", gdp: 0.3, unemployment: 6.2, inflation: 4.9 },
-    { quarter: "Q4 2023", gdp: 1.1, unemployment: 5.8, inflation: 4.2 },
-    { quarter: "Q1 2024", gdp: 1.7, unemployment: 5.3, inflation: 3.8 }
+  const [activeTab, setActiveTab] = useState("economy");
+
+  const handleDownload = (reportType: string) => {
+    NotificationSystem.success(`${reportType} report download started`, {
+      description: "The report will be downloaded shortly",
+    });
+  };
+
+  const handleShare = (reportType: string) => {
+    NotificationSystem.info(`Share ${reportType} report`, {
+      description: "Link copied to clipboard",
+      action: {
+        label: "Undo",
+        onClick: () => {
+          NotificationSystem.info("Share cancelled");
+        }
+      }
+    });
+  };
+
+  // Transform economic data to match DataPoint interface
+  const economicData: DataPoint[] = [
+    { name: "Q1 2023", value: 3.2 },
+    { name: "Q2 2023", value: 2.8 },
+    { name: "Q3 2023", value: 3.5 },
+    { name: "Q4 2023", value: 3.7 },
+    { name: "Q1 2024", value: 3.1 },
+    { name: "Q2 2024", value: 2.9 }
   ];
 
-  const sectorPerformance = [
-    { name: "Technology", value: 32.7 },
-    { name: "Healthcare", value: 18.2 },
-    { name: "Financials", value: 15.6 },
-    { name: "Consumer", value: 12.9 },
-    { name: "Energy", value: 9.3 },
-    { name: "Utilities", value: 5.8 },
-    { name: "Materials", value: 5.5 }
+  // Full economic dataset for table view
+  const fullEconomicData = [
+    { quarter: "Q1 2023", gdp: 3.2, unemployment: 5.1, inflation: 4.3 },
+    { quarter: "Q2 2023", gdp: 2.8, unemployment: 4.9, inflation: 4.1 },
+    { quarter: "Q3 2023", gdp: 3.5, unemployment: 4.7, inflation: 3.8 },
+    { quarter: "Q4 2023", gdp: 3.7, unemployment: 4.5, inflation: 3.5 },
+    { quarter: "Q1 2024", gdp: 3.1, unemployment: 4.3, inflation: 3.2 },
+    { quarter: "Q2 2024", gdp: 2.9, unemployment: 4.2, inflation: 3.0 }
   ];
 
-  const housingMarketData = [
-    { month: "Jan", sales: 4200, medianPrice: 320000, inventory: 52000 },
-    { month: "Feb", sales: 4350, medianPrice: 325000, inventory: 48000 },
-    { month: "Mar", sales: 5100, medianPrice: 327000, inventory: 45000 },
-    { month: "Apr", sales: 5700, medianPrice: 335000, inventory: 42000 },
-    { month: "May", sales: 6200, medianPrice: 340000, inventory: 38000 },
-    { month: "Jun", sales: 6800, medianPrice: 348000, inventory: 36000 },
-    { month: "Jul", sales: 6500, medianPrice: 352000, inventory: 35000 },
-    { month: "Aug", sales: 6300, medianPrice: 349000, inventory: 37000 },
-    { month: "Sep", sales: 5900, medianPrice: 345000, inventory: 40000 },
+  // Transform stock market data to match DataPoint interface
+  const stockMarketData: DataPoint[] = [
+    { name: "Jan", value: 4250 },
+    { name: "Feb", value: 4310 },
+    { name: "Mar", value: 4150 },
+    { name: "Apr", value: 4290 },
+    { name: "May", value: 4380 },
+    { name: "Jun", value: 4450 }
+  ];
+
+  // Full stock market dataset for table view
+  const fullStockMarketData = [
+    { month: "Jan", indexValue: 4250, volume: 3.2, volatility: 12.4 },
+    { month: "Feb", indexValue: 4310, volume: 3.5, volatility: 11.8 },
+    { month: "Mar", indexValue: 4150, volume: 3.1, volatility: 14.2 },
+    { month: "Apr", indexValue: 4290, volume: 2.9, volatility: 13.5 },
+    { month: "May", indexValue: 4380, volume: 3.3, volatility: 12.1 },
+    { month: "Jun", indexValue: 4450, volume: 3.6, volatility: 11.5 }
+  ];
+
+  // Transform real estate data to match DataPoint interface
+  const realEstateData: DataPoint[] = [
+    { name: "Jan", value: 520 },
+    { name: "Feb", value: 515 },
+    { name: "Mar", value: 535 },
+    { name: "Apr", value: 550 },
+    { name: "May", value: 565 },
+    { name: "Jun", value: 580 }
+  ];
+
+  // Full real estate dataset for table view
+  const fullRealEstateData = [
+    { month: "Jan", sales: 520, medianPrice: 450000, inventory: 12500 },
+    { month: "Feb", sales: 515, medianPrice: 455000, inventory: 12200 },
+    { month: "Mar", sales: 535, medianPrice: 462000, inventory: 11800 },
+    { month: "Apr", sales: 550, medianPrice: 468000, inventory: 11500 },
+    { month: "May", sales: 565, medianPrice: 475000, inventory: 11200 },
+    { month: "Jun", sales: 580, medianPrice: 482000, inventory: 10800 }
   ];
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Data Insights</h1>
-        <p className="text-gray-600 dark:text-gray-300 mb-6">
-          Interactive data visualizations to help you understand market trends and economic indicators.
+        <h1 className="text-3xl font-bold mb-2">Data & Insights</h1>
+        <p className="text-gray-600 dark:text-gray-400">
+          Interactive visualizations of key business and economic data
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-8">
-        <Card>
-          <CardHeader>
-            <CardTitle>Economic Outlook Report</CardTitle>
-            <CardDescription>
-              Analysis of key economic indicators over the past two years shows a recovering economy after a brief recession.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="prose dark:prose-invert max-w-none">
-            <p>
-              Our analysis of recent economic data indicates a slow but steady recovery following the brief economic downturn in early 2023. 
-              GDP growth has returned to positive territory, while inflation continues its downward trend from the peak levels seen in 2022.
-            </p>
-            
-            <h3 className="mt-6 mb-4">Economic Indicators By Quarter</h3>
-            <DataVisualization 
-              title="GDP, Unemployment & Inflation Trends (2022-2024)"
-              data={economicGrowthData}
-              xKey="quarter"
-              yKey="gdp"
-            />
-            
-            <p className="mt-6">
-              The data reveals that while GDP growth stalled in early 2023, the recovery has been gaining momentum over the past three quarters. 
-              Meanwhile, inflation has been steadily decreasing, providing relief to consumers and businesses alike.
-            </p>
-            
-            <h3 className="mt-8 mb-4">Market Sector Performance</h3>
-            <DataVisualization 
-              title="Market Capitalization by Sector (%)"
-              description="Percentage of total market capitalization by industry sector"
-              data={sectorPerformance}
-            />
-            
-            <p className="mt-6">
-              The technology sector continues to dominate the market, accounting for nearly a third of total market capitalization. 
-              Healthcare and financial sectors follow as the second and third largest sectors respectively.
-            </p>
-            
-            <h3 className="mt-8 mb-4">Housing Market Analysis</h3>
-            <DataVisualization 
-              title="Housing Market Trends (2023)"
-              description="Monthly sales volume and median home prices"
-              data={housingMarketData}
-              xKey="month"
-              yKey="sales"
-            />
-            
-            <p className="mt-6">
-              The housing market has shown strong seasonal patterns, with sales peaking during the summer months and tapering off into the fall. 
-              Median home prices have stabilized after a period of rapid growth, suggesting a more balanced market ahead.
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList className="grid grid-cols-3 mb-8">
+          <TabsTrigger value="economy">Economic Indicators</TabsTrigger>
+          <TabsTrigger value="stockMarket">Stock Market</TabsTrigger>
+          <TabsTrigger value="realEstate">Real Estate</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="economy">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>GDP Growth Rate (%)</CardTitle>
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm" onClick={() => handleShare("Economic")} className="flex items-center gap-1">
+                  <Share2 size={16} /> Share
+                </Button>
+                <Button variant="outline" size="sm" onClick={() => handleDownload("Economic")} className="flex items-center gap-1">
+                  <Download size={16} /> Download Report
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <DataVisualization 
+                data={economicData}
+                chartType="bar"
+                title="Quarterly GDP Growth Rate (%)"
+                xAxisLabel="Quarter"
+                yAxisLabel="Growth Rate (%)"
+              />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="stockMarket">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>S&P 500 Index</CardTitle>
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm" onClick={() => handleShare("Stock Market")} className="flex items-center gap-1">
+                  <Share2 size={16} /> Share
+                </Button>
+                <Button variant="outline" size="sm" onClick={() => handleDownload("Stock Market")} className="flex items-center gap-1">
+                  <Download size={16} /> Download Report
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <DataVisualization 
+                data={stockMarketData}
+                chartType="line"
+                title="S&P 500 Index Value"
+                xAxisLabel="Month"
+                yAxisLabel="Index Value"
+              />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="realEstate">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>Home Sales</CardTitle>
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm" onClick={() => handleShare("Real Estate")} className="flex items-center gap-1">
+                  <Share2 size={16} /> Share
+                </Button>
+                <Button variant="outline" size="sm" onClick={() => handleDownload("Real Estate")} className="flex items-center gap-1">
+                  <Download size={16} /> Download Report
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <DataVisualization 
+                data={realEstateData}
+                chartType="area"
+                title="Monthly Home Sales (thousands)"
+                xAxisLabel="Month"
+                yAxisLabel="Sales (thousands)"
+              />
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
