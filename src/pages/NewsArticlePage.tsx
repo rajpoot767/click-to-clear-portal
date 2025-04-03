@@ -188,6 +188,7 @@ const NewsArticlePage = () => {
           <Card className="overflow-hidden border-gray-200 dark:border-gray-700">
             <ArticleHeader 
               article={article}
+              category={article.category}
               isPlaying={isPlaying}
               isBookmarked={isBookmarked}
               handleBookmark={handleBookmark}
@@ -197,6 +198,7 @@ const NewsArticlePage = () => {
             
             <ArticleContent 
               article={article}
+              imageUrl={article.imageUrl}
               isPlaying={isPlaying}
               toggleAudioPlayback={toggleAudioPlayback}
             />
