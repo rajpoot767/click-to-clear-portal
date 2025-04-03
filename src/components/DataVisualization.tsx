@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { 
@@ -33,6 +32,9 @@ interface DataSetProps {
   colors?: string[];
   xKey?: string;
   yKey?: string;
+  chartType?: "line" | "bar" | "pie" | "area";
+  xAxisLabel?: string;
+  yAxisLabel?: string;
 }
 
 const DEFAULT_COLORS = [
@@ -47,10 +49,15 @@ const DataVisualization = ({
   data, 
   colors = DEFAULT_COLORS,
   xKey = "name",
-  yKey = "value"
+  yKey = "value",
+  chartType: initialChartType,
+  xAxisLabel,
+  yAxisLabel
 }: DataSetProps) => {
   const [visualizationType, setVisualizationType] = useState<"chart" | "table">("chart");
-  const [chartType, setChartType] = useState<"line" | "bar" | "pie">("line");
+  const [chartType, setChartType] = useState<"line" | "bar" | "pie">(
+    initialChartType === "area" ? "line" : (initialChartType as "line" | "bar" | "pie") || "line"
+  );
 
   if (!data || data.length === 0) {
     return (
@@ -67,7 +74,6 @@ const DataVisualization = ({
     );
   }
 
-  // Check if the data is appropriate for pie chart (sum should be meaningful)
   const isPieChartSuitable = data.every(item => typeof item[yKey] === 'number' && item[yKey] >= 0);
 
   return (
@@ -109,8 +115,13 @@ const DataVisualization = ({
               {chartType === "line" ? (
                 <LineChart data={data}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey={xKey} />
-                  <YAxis />
+                  <XAxis 
+                    dataKey={xKey} 
+                    label={xAxisLabel ? { value: xAxisLabel, position: 'insideBottom', offset: -5 } : undefined}
+                  />
+                  <YAxis
+                    label={yAxisLabel ? { value: yAxisLabel, angle: -90, position: 'insideLeft' } : undefined}
+                  />
                   <Tooltip />
                   <Legend />
                   <Line 
@@ -123,8 +134,13 @@ const DataVisualization = ({
               ) : chartType === "bar" ? (
                 <BarChart data={data}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey={xKey} />
-                  <YAxis />
+                  <XAxis 
+                    dataKey={xKey} 
+                    label={xAxisLabel ? { value: xAxisLabel, position: 'insideBottom', offset: -5 } : undefined}
+                  />
+                  <YAxis
+                    label={yAxisLabel ? { value: yAxisLabel, angle: -90, position: 'insideLeft' } : undefined}
+                  />
                   <Tooltip />
                   <Legend />
                   <Bar dataKey={yKey} fill={colors[0]} />
