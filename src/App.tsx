@@ -9,6 +9,7 @@ import { BookmarkProvider } from "./contexts/BookmarkContext";
 import EnhancedNavbar from "./components/EnhancedNavbar";
 import ScrollToTop from "./components/ScrollToTop";
 import ReadingProgressBar from "./components/ReadingProgressBar";
+import Footer from "./components/Footer";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import CategoryPage from "./pages/CategoryPage";
@@ -43,6 +44,7 @@ const App = () => (
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </main>
+              <Footer />
               <ScrollToTop />
             </div>
           </BrowserRouter>

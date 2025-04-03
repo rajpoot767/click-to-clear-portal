@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Bookmark, Share2, Play, Pause, Volume2, TrendingUp } from "lucide-react";
@@ -12,6 +13,7 @@ import SocialShareButtons from "@/components/SocialShareButtons";
 import WeatherWidget from "@/components/WeatherWidget";
 import StockTicker from "@/components/StockTicker";
 import MarketIndicatorsDashboard from "@/components/MarketIndicatorsDashboard";
+import CategorySubscribeButton from "@/components/CategorySubscribeButton";
 
 const NewsArticlePage = () => {
   const { id } = useParams<{ id: string }>();
@@ -191,10 +193,11 @@ const NewsArticlePage = () => {
                 alt={article.title} 
                 className="w-full h-64 object-cover"
               />
-              <div className="absolute top-4 left-4">
+              <div className="absolute top-4 left-4 flex items-center gap-2">
                 <span className="bg-blue-600 text-white text-xs font-bold px-2 py-1 uppercase rounded">
                   {article.category}
                 </span>
+                <CategorySubscribeButton category={article.category} className="bg-white/70 dark:bg-gray-800/70 hover:bg-white dark:hover:bg-gray-800" />
               </div>
             </div>
             
