@@ -1,71 +1,45 @@
 
 import React from "react";
-import { Bookmark, Share2, Play, Pause } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import CategorySubscribeButton from "@/components/CategorySubscribeButton";
+import { Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
+import BookmarkButton from "@/components/BookmarkButton";
 
 interface ArticleHeaderProps {
   article: any;
-  isPlaying: boolean;
-  isBookmarked: (id: string) => boolean;
-  handleBookmark: () => void;
-  handleShare: () => void;
-  toggleAudioPlayback: () => void;
+  category: string;
 }
 
-const ArticleHeader = ({
-  article,
-  isPlaying,
-  isBookmarked,
-  handleBookmark,
-  handleShare,
-  toggleAudioPlayback,
-}: ArticleHeaderProps) => {
+const ArticleHeader = ({ article, category }: ArticleHeaderProps) => {
   return (
-    <>
-      <div className="relative">
-        <img 
-          src={article.imageUrl} 
-          alt={article.title} 
-          className="w-full h-64 object-cover"
-        />
-        <div className="absolute top-4 left-4 flex items-center gap-2">
-          <span className="bg-blue-600 text-white text-xs font-bold px-2 py-1 uppercase rounded">
-            {article.category}
-          </span>
-          <CategorySubscribeButton category={article.category} className="bg-white/70 dark:bg-gray-800/70 hover:bg-white dark:hover:bg-gray-800" />
-        </div>
+    <div>
+      <Link 
+        to={`/category/${category.toLowerCase()}`}
+        className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-4"
+      >
+        <ArrowLeft size={16} className="mr-1" />
+        Back to {category}
+      </Link>
+      
+      <div className="mb-2">
+        <span className="text-blue-600 text-sm font-bold uppercase">
+          {category}
+        </span>
       </div>
       
-      <div className="p-6">
-        <div className="flex justify-between items-start mb-4">
-          <h1 className="text-3xl font-bold">{article.title}</h1>
-          
-          <div className="flex gap-2">
-            <Button 
-              variant="outline" 
-              size="icon" 
-              onClick={handleBookmark}
-              className={isBookmarked(article.id) ? "text-blue-600" : ""}
-            >
-              <Bookmark size={18} className={isBookmarked(article.id) ? "fill-blue-600" : ""} />
-            </Button>
-            <Button variant="outline" size="icon" onClick={handleShare}>
-              <Share2 size={18} />
-            </Button>
-            <Button variant="outline" size="icon" onClick={toggleAudioPlayback}>
-              {isPlaying ? <Pause size={18} /> : <Play size={18} />}
-            </Button>
-          </div>
+      <h1 className="text-3xl sm:text-4xl font-bold mb-4">{article.title}</h1>
+      
+      <div className="flex items-center justify-between mb-6">
+        <div className="text-gray-600">
+          <span>{article.author}</span>
+          <span className="mx-2">•</span>
+          <span>{article.date || `${article.hoursAgo} hours ago`}</span>
         </div>
         
-        <div className="mb-4 text-gray-600 dark:text-gray-400">
-          <span>By {article.author}</span>
-          <span className="mx-2">•</span>
-          <span>{article.date}</span>
+        <div className="flex items-center gap-2">
+          <BookmarkButton articleId={article.id} title={article.title} />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
