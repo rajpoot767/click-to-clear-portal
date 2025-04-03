@@ -2,15 +2,25 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import SocialShareButtons from "@/components/SocialShareButtons";
+import AudioPlaybackNotification from "@/components/article/AudioPlaybackNotification";
 
 interface ArticleContentProps {
   article: any;
   imageUrl: string;
+  isPlaying?: boolean;
+  toggleAudioPlayback?: () => void;
 }
 
-const ArticleContent = ({ article, imageUrl }: ArticleContentProps) => {
+const ArticleContent = ({ article, imageUrl, isPlaying, toggleAudioPlayback }: ArticleContentProps) => {
   return (
     <div>
+      {isPlaying !== undefined && toggleAudioPlayback && (
+        <AudioPlaybackNotification 
+          isPlaying={isPlaying} 
+          toggleAudioPlayback={toggleAudioPlayback} 
+        />
+      )}
+      
       <SocialShareButtons 
         url={window.location.href} 
         title={article.title} 

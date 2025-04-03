@@ -1,15 +1,29 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Volume2 } from "lucide-react";
 import BookmarkButton from "@/components/BookmarkButton";
+import { Button } from "@/components/ui/button";
 
 interface ArticleHeaderProps {
   article: any;
   category: string;
+  isPlaying?: boolean;
+  isBookmarked?: (id: string) => boolean;
+  handleBookmark?: () => void;
+  handleShare?: () => void;
+  toggleAudioPlayback?: () => void;
 }
 
-const ArticleHeader = ({ article, category }: ArticleHeaderProps) => {
+const ArticleHeader = ({ 
+  article, 
+  category,
+  isPlaying,
+  isBookmarked,
+  handleBookmark,
+  handleShare,
+  toggleAudioPlayback
+}: ArticleHeaderProps) => {
   return (
     <div>
       <Link 
@@ -36,7 +50,39 @@ const ArticleHeader = ({ article, category }: ArticleHeaderProps) => {
         </div>
         
         <div className="flex items-center gap-2">
-          <BookmarkButton articleId={article.id} title={article.title} />
+          {toggleAudioPlayback && (
+            <Button 
+              size="sm" 
+              variant={isPlaying ? "default" : "outline"}
+              onClick={toggleAudioPlayback}
+              className="flex items-center gap-1"
+            >
+              <Volume2 size={16} />
+              <span>{isPlaying ? "Stop" : "Listen"}</span>
+            </Button>
+          )}
+          
+          {handleShare && (
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={handleShare}
+            >
+              Share
+            </Button>
+          )}
+          
+          {handleBookmark ? (
+            <Button 
+              variant={isBookmarked && isBookmarked(article.id) ? "default" : "outline"}
+              size="sm" 
+              onClick={handleBookmark}
+            >
+              {isBookmarked && isBookmarked(article.id) ? "Bookmarked" : "Bookmark"}
+            </Button>
+          ) : (
+            <BookmarkButton articleId={article.id} title={article.title} />
+          )}
         </div>
       </div>
     </div>
