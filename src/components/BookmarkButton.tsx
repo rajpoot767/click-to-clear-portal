@@ -11,9 +11,18 @@ interface BookmarkButtonProps {
   title: string;
   imageUrl?: string;
   category?: string;
+  showReadLater?: boolean;
+  showDashboard?: boolean;
 }
 
-const BookmarkButton = ({ articleId, title, imageUrl, category }: BookmarkButtonProps) => {
+const BookmarkButton = ({ 
+  articleId, 
+  title, 
+  imageUrl, 
+  category, 
+  showReadLater = true, 
+  showDashboard = true 
+}: BookmarkButtonProps) => {
   const { addBookmark, removeBookmark, isBookmarked, addToReadLater, isInReadLater } = useBookmarks();
   const { toast } = useToast();
   
@@ -68,27 +77,31 @@ const BookmarkButton = ({ articleId, title, imageUrl, category }: BookmarkButton
         <span className="ml-1">{isBookmarked(articleId) ? "Bookmarked" : "Bookmark"}</span>
       </Button>
       
-      <Button
-        variant="ghost"
-        size="sm"
-        onClick={handleReadLater}
-        className="text-gray-500"
-      >
-        <Clock size={18} />
-        <span className="ml-1">Read Later</span>
-      </Button>
+      {showReadLater && (
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleReadLater}
+          className={isInReadLater(articleId) ? "text-blue-600" : "text-gray-500"}
+        >
+          <Clock size={18} className={isInReadLater(articleId) ? "fill-blue-600" : ""} />
+          <span className="ml-1">{isInReadLater(articleId) ? "Saved for Later" : "Read Later"}</span>
+        </Button>
+      )}
       
-      <Button
-        variant="ghost"
-        size="sm"
-        className="text-gray-500"
-        asChild
-      >
-        <Link to="/dashboard">
-          <LayoutDashboard size={18} />
-          <span className="ml-1">View Dashboard</span>
-        </Link>
-      </Button>
+      {showDashboard && (
+        <Button
+          variant="ghost"
+          size="sm"
+          className="text-gray-500"
+          asChild
+        >
+          <Link to="/dashboard">
+            <LayoutDashboard size={18} />
+            <span className="ml-1">View Dashboard</span>
+          </Link>
+        </Button>
+      )}
     </div>
   );
 };

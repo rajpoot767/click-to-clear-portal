@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
@@ -14,12 +15,14 @@ import RelatedArticles from "@/components/article/RelatedArticles";
 import ArticleSidebar from "@/components/article/ArticleSidebar";
 import ArticlePoll from "@/components/article/ArticlePoll";
 import ArticleSurvey from "@/components/article/ArticleSurvey";
+import TableOfContents from "@/components/article/TableOfContents";
+import BookmarkButton from "@/components/BookmarkButton";
 
 const NewsArticlePage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { addBookmark, removeBookmark, isBookmarked } = useBookmarks();
+  const { addBookmark, removeBookmark, isBookmarked, addToReadLater, isInReadLater } = useBookmarks();
   
   // Audio playback state
   const [isPlaying, setIsPlaying] = useState(false);
@@ -115,6 +118,26 @@ const NewsArticlePage = () => {
     }
   };
 
+  const handleSaveForLater = () => {
+    if (!article) return;
+    
+    if (!isInReadLater(article.id)) {
+      addToReadLater({
+        id: article.id,
+        title: article.title
+      });
+      toast({
+        title: "Saved for later",
+        description: "You can find this article in your read later list"
+      });
+    } else {
+      toast({
+        title: "Already saved",
+        description: "This article is already in your read later list"
+      });
+    }
+  };
+
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href).then(() => {
       toast({
@@ -189,22 +212,35 @@ const NewsArticlePage = () => {
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="lg:w-2/3">
           <Card className="overflow-hidden border-gray-200 dark:border-gray-700">
-            <ArticleHeader 
-              article={article}
-              category={article.category}
-              isPlaying={isPlaying}
-              isBookmarked={isBookmarked}
-              handleBookmark={handleBookmark}
-              handleShare={handleShare}
-              toggleAudioPlayback={toggleAudioPlayback}
-            />
-            
-            <ArticleContent 
-              article={article}
-              imageUrl={article.imageUrl}
-              isPlaying={isPlaying}
-              toggleAudioPlayback={toggleAudioPlayback}
-            />
+            <div className="p-6">
+              <ArticleHeader 
+                article={article}
+                category={article.category}
+                isPlaying={isPlaying}
+                isBookmarked={isBookmarked}
+                handleBookmark={handleBookmark}
+                handleShare={handleShare}
+                toggleAudioPlayback={toggleAudioPlayback}
+              />
+              
+              <div className="mb-6 mt-6">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={handleSaveForLater}
+                  className={isInReadLater(article.id) ? "bg-blue-50 text-blue-600 border-blue-200" : ""}
+                >
+                  {isInReadLater(article.id) ? "Saved for Later" : "Save for Later"}
+                </Button>
+              </div>
+              
+              <ArticleContent 
+                article={article}
+                imageUrl={article.imageUrl}
+                isPlaying={isPlaying}
+                toggleAudioPlayback={toggleAudioPlayback}
+              />
+            </div>
             
             {article.hasPoll && (
               <div className="px-6">
@@ -261,6 +297,7 @@ const NewsArticlePage = () => {
         </div>
         
         <div className="lg:w-1/3 space-y-6">
+          <TableOfContents content={article.content} />
           <ArticleSidebar />
         </div>
       </div>
