@@ -11,6 +11,7 @@ const NavLinks = () => {
     { name: "Technology", path: "/category/technology" },
     { name: "Finance", path: "/category/finance" },
     { name: "Markets", path: "/category/markets" },
+    { name: "Dashboard", path: "/dashboard" },
     { name: "Data Insights", path: "/data-insights" },
   ];
 
@@ -25,7 +26,8 @@ const NavLinks = () => {
             key={link.path}
             to={link.path}
             className={`px-3 py-2 text-sm font-medium rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors relative
-                      ${isActive ? 'text-blue-600 dark:text-blue-400 font-semibold' : 'text-gray-600 dark:text-gray-300'}`}
+                      ${isActive ? 'text-blue-600 dark:text-blue-400 font-semibold' : 'text-gray-600 dark:text-gray-300'}
+                      ${link.name === 'Dashboard' ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-800' : ''}`}
           >
             {link.name}
             {isActive && (

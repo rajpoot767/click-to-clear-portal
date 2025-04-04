@@ -16,6 +16,7 @@ import CategoryPage from "./pages/CategoryPage";
 import ArticlePage from "./pages/ArticlePage";
 import NewsArticlePage from "./pages/NewsArticlePage";
 import ProfilePage from "./pages/ProfilePage";
+import DashboardPage from "./pages/DashboardPage";
 import DataInsights from "./pages/DataInsights";
 import BreakingNewsBanner from "./components/BreakingNewsBanner";
 
@@ -40,6 +41,7 @@ const App = () => (
                   <Route path="/article/:id" element={<ArticlePage />} />
                   <Route path="/news/:id" element={<NewsArticlePage />} />
                   <Route path="/profile" element={<ProfilePage />} />
+                  <Route path="/dashboard" element={<DashboardPage />} />
                   <Route path="/data-insights" element={<DataInsights />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>

@@ -1,9 +1,10 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Bookmark, Clock } from "lucide-react";
+import { Bookmark, Clock, LayoutDashboard } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useBookmarks } from "@/contexts/BookmarkContext";
+import { Link } from "react-router-dom";
 
 interface BookmarkButtonProps {
   articleId: string;
@@ -56,7 +57,7 @@ const BookmarkButton = ({ articleId, title, imageUrl, category }: BookmarkButton
   };
 
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2 flex-wrap">
       <Button 
         variant="ghost" 
         size="sm" 
@@ -75,6 +76,18 @@ const BookmarkButton = ({ articleId, title, imageUrl, category }: BookmarkButton
       >
         <Clock size={18} />
         <span className="ml-1">Read Later</span>
+      </Button>
+      
+      <Button
+        variant="ghost"
+        size="sm"
+        className="text-gray-500"
+        asChild
+      >
+        <Link to="/dashboard">
+          <LayoutDashboard size={18} />
+          <span className="ml-1">View Dashboard</span>
+        </Link>
       </Button>
     </div>
   );

@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Search, ChevronDown, User, Bell } from "lucide-react";
+import { Search, ChevronDown, User, Bell, LayoutDashboard } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,6 +21,7 @@ const EnhancedNavbar = () => {
     { id: 1, text: "New finance report available", read: false },
     { id: 2, text: "Breaking news: Market update", read: false },
   ]);
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // Mock login state for now
 
   // Handle scroll effect for navbar
   useEffect(() => {
@@ -74,6 +75,19 @@ const EnhancedNavbar = () => {
           <div className="flex gap-4 items-center">
             <Link to="/" className="text-sm bg-blue-500 text-white hover:bg-blue-600 hover:text-white px-3 py-1 rounded-md transition-colors">Subscribe</Link>
             <div className="flex items-center gap-2">
+              {isLoggedIn && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="bg-green-500 hover:bg-green-600 text-white hover:text-white transition-colors"
+                  asChild
+                >
+                  <Link to="/dashboard">
+                    <LayoutDashboard size={16} className="mr-1" />
+                    <span className="text-sm">Dashboard</span>
+                  </Link>
+                </Button>
+              )}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="sm" className="relative">
@@ -183,6 +197,11 @@ const EnhancedNavbar = () => {
             </div>
             
             <Link to="/data-insights" className="px-4 py-3 whitespace-nowrap text-white bg-blue-500 hover:bg-blue-600 ml-auto">Data & Insights</Link>
+            {isLoggedIn && (
+              <Link to="/dashboard" className="px-4 py-3 whitespace-nowrap text-white bg-green-500 hover:bg-green-600">
+                My Dashboard
+              </Link>
+            )}
           </div>
         </div>
       </div>
