@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Search, ChevronDown, User, Bell, LayoutDashboard } from "lucide-react";
+import { Search, ChevronDown, User, Bell, LayoutDashboard, Menu, X } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,8 +20,10 @@ const EnhancedNavbar = () => {
   const [notifications, setNotifications] = useState([
     { id: 1, text: "New finance report available", read: false },
     { id: 2, text: "Breaking news: Market update", read: false },
+    { id: 3, text: "Your saved article was updated", read: false },
   ]);
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Mock login state for now
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Handle scroll effect for navbar
   useEffect(() => {
@@ -61,10 +63,17 @@ const EnhancedNavbar = () => {
     );
   };
 
+  // Mark all notifications as read
+  const markAllAsRead = () => {
+    setNotifications(
+      notifications.map(notification => ({ ...notification, read: true }))
+    );
+  };
+
   const unreadCount = notifications.filter(n => !n.read).length;
 
   return (
-    <div className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'shadow-md' : ''}`}>
+    <div className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'shadow-md' : ''}`}>
       {/* Top navigation bar */}
       <div className="bg-navy-900 dark:bg-gray-900 text-white py-2">
         <div className="container mx-auto px-4 flex justify-between items-center">
@@ -79,7 +88,7 @@ const EnhancedNavbar = () => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="bg-green-500 hover:bg-green-600 text-white hover:text-white transition-colors"
+                  className="bg-green-500 hover:bg-green-600 text-white hover:text-white transition-colors animate-fade-in"
                   asChild
                 >
                   <Link to="/dashboard">
@@ -93,14 +102,26 @@ const EnhancedNavbar = () => {
                   <Button variant="ghost" size="sm" className="relative">
                     <Bell size={18} className="text-white" />
                     {unreadCount > 0 && (
-                      <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 bg-red-500">
+                      <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 bg-red-500 animate-pulse">
                         {unreadCount}
                       </Badge>
                     )}
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-80">
-                  <div className="p-2 font-medium border-b">Notifications</div>
+                <DropdownMenuContent align="end" className="w-80 bg-white dark:bg-gray-800">
+                  <div className="p-2 font-medium border-b flex justify-between items-center">
+                    <span>Notifications</span>
+                    {unreadCount > 0 && (
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        onClick={markAllAsRead}
+                        className="text-xs text-blue-500 hover:text-blue-700"
+                      >
+                        Mark all as read
+                      </Button>
+                    )}
+                  </div>
                   {notifications.length > 0 ? (
                     notifications.map((notification) => (
                       <DropdownMenuItem key={notification.id} onClick={() => markAsRead(notification.id)}>
@@ -150,7 +171,7 @@ const EnhancedNavbar = () => {
             </Link>
           </div>
           
-          <div className="relative w-80">
+          <div className="relative w-80 hidden md:block">
             <SearchModal
               trigger={
                 <div className="flex items-center border dark:border-gray-600 rounded-md cursor-pointer hover:border-blue-400 transition-all">
@@ -168,13 +189,21 @@ const EnhancedNavbar = () => {
               }
             />
           </div>
+          
+          {/* Mobile menu button */}
+          <button 
+            className="md:hidden p-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
       </div>
       
       {/* Category navigation */}
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <div className="container mx-auto px-4">
-          <div className="flex overflow-x-auto scrollbar-hide">
+          <div className={`${mobileMenuOpen ? 'flex flex-col' : 'hidden md:flex'} overflow-x-auto scrollbar-hide`}>
             <NavLinks />
             
             {/* All Categories dropdown */}
@@ -205,6 +234,31 @@ const EnhancedNavbar = () => {
           </div>
         </div>
       </div>
+      
+      {/* Mobile search (shown when mobile menu is open) */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-white dark:bg-gray-800 p-4 border-t border-gray-200 dark:border-gray-700 animate-fade-in">
+          <SearchModal
+            trigger={
+              <div className="flex items-center border dark:border-gray-600 rounded-md cursor-pointer hover:border-blue-400 transition-all">
+                <span className="absolute right-3">
+                  <Search size={20} className="text-gray-400" />
+                </span>
+                <input 
+                  type="text" 
+                  placeholder="Search..." 
+                  className="w-full px-4 py-2 pr-10 text-sm border-none dark:bg-gray-700 dark:text-gray-100 focus:outline-none focus:ring-0 cursor-pointer rounded-md"
+                  onClick={(e) => e.preventDefault()}
+                  readOnly
+                />
+              </div>
+            }
+          />
+        </div>
+      )}
+      
+      {/* Page content spacer to prevent content from being hidden under fixed navbar */}
+      <div className="h-[165px] md:h-[132px]"></div>
     </div>
   );
 };
