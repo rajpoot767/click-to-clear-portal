@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Search, ChevronDown, User, Bell, LayoutDashboard, Menu, X } from "lucide-react";
@@ -88,7 +87,7 @@ const EnhancedNavbar = () => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="bg-green-500 hover:bg-green-600 text-white hover:text-white transition-colors animate-fade-in"
+                  className="bg-green-500 hover:bg-green-600 text-white hover:text-white transition-colors animate-pulse"
                   asChild
                 >
                   <Link to="/dashboard">
@@ -226,11 +225,6 @@ const EnhancedNavbar = () => {
             </div>
             
             <Link to="/data-insights" className="px-4 py-3 whitespace-nowrap text-white bg-blue-500 hover:bg-blue-600 ml-auto">Data & Insights</Link>
-            {isLoggedIn && (
-              <Link to="/dashboard" className="px-4 py-3 whitespace-nowrap text-white bg-green-500 hover:bg-green-600">
-                My Dashboard
-              </Link>
-            )}
           </div>
         </div>
       </div>
