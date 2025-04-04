@@ -6,8 +6,10 @@ import { Button } from "@/components/ui/button";
 import { useBookmarks } from "@/contexts/BookmarkContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Link } from "react-router-dom";
-import { UserCircle, Bookmark, Clock, Settings } from "lucide-react";
+import { UserCircle, Bookmark, Clock, Settings, Layout, PieChart } from "lucide-react";
 import NewsletterForm from "@/components/NewsletterForm";
+import DashboardCustomizer from "@/components/dashboard/DashboardCustomizer";
+import ReadingPreferences from "@/components/dashboard/ReadingPreferences";
 
 const ProfilePage = () => {
   const { bookmarks, removeBookmark } = useBookmarks();
@@ -15,6 +17,7 @@ const ProfilePage = () => {
     { id: "1", title: "Why Tech Companies Are Moving to Hybrid Work Models", date: "2 days ago" },
     { id: "2", title: "The Impact of AI on Modern Journalism", date: "1 week ago" }
   ]);
+  const [customDashboard, setCustomDashboard] = useState(false);
 
   const removeFromReadLater = (id: string) => {
     setReadLater(prev => prev.filter(item => item.id !== id));
@@ -56,6 +59,18 @@ const ProfilePage = () => {
                   </Link>
                 </Button>
                 <Button variant="outline" className="justify-start" asChild>
+                  <Link to="/profile?tab=customize">
+                    <Layout className="mr-2 h-4 w-4" />
+                    Customize Dashboard
+                  </Link>
+                </Button>
+                <Button variant="outline" className="justify-start" asChild>
+                  <Link to="/profile?tab=preferences">
+                    <PieChart className="mr-2 h-4 w-4" />
+                    Reading Preferences
+                  </Link>
+                </Button>
+                <Button variant="outline" className="justify-start" asChild>
                   <Link to="/profile?tab=settings">
                     <Settings className="mr-2 h-4 w-4" />
                     Settings
@@ -75,6 +90,8 @@ const ProfilePage = () => {
               <TabsTrigger value="profile">Profile</TabsTrigger>
               <TabsTrigger value="bookmarks">Bookmarks</TabsTrigger>
               <TabsTrigger value="read-later">Read Later</TabsTrigger>
+              <TabsTrigger value="customize">Customize</TabsTrigger>
+              <TabsTrigger value="preferences">Preferences</TabsTrigger>
               <TabsTrigger value="settings">Settings</TabsTrigger>
             </TabsList>
             
@@ -85,6 +102,26 @@ const ProfilePage = () => {
                 </CardHeader>
                 <CardContent>
                   <p>Welcome to your profile page. Here you can manage your bookmarks, reading list, and account settings.</p>
+                  {customDashboard ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                      <Card className="p-4 border border-blue-200">
+                        <h3 className="font-bold mb-2">Recent Activity</h3>
+                        <p>You've read 5 articles this week</p>
+                      </Card>
+                      <Card className="p-4 border border-green-200">
+                        <h3 className="font-bold mb-2">Recommended Topics</h3>
+                        <p>Finance, Technology, Health</p>
+                      </Card>
+                    </div>
+                  ) : (
+                    <Button 
+                      className="mt-4" 
+                      onClick={() => setCustomDashboard(true)}
+                    >
+                      <Layout className="mr-2 h-4 w-4" />
+                      Enable Custom Dashboard
+                    </Button>
+                  )}
                 </CardContent>
               </Card>
             </TabsContent>
@@ -172,6 +209,14 @@ const ProfilePage = () => {
                   )}
                 </CardContent>
               </Card>
+            </TabsContent>
+            
+            <TabsContent value="customize">
+              <DashboardCustomizer />
+            </TabsContent>
+            
+            <TabsContent value="preferences">
+              <ReadingPreferences />
             </TabsContent>
             
             <TabsContent value="settings">

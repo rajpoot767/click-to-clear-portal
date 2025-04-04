@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
@@ -13,6 +12,8 @@ import ArticleHeader from "@/components/article/ArticleHeader";
 import ArticleContent from "@/components/article/ArticleContent";
 import RelatedArticles from "@/components/article/RelatedArticles";
 import ArticleSidebar from "@/components/article/ArticleSidebar";
+import ArticlePoll from "@/components/article/ArticlePoll";
+import ArticleSurvey from "@/components/article/ArticleSurvey";
 
 const NewsArticlePage = () => {
   const { id } = useParams<{ id: string }>();
@@ -50,6 +51,8 @@ const NewsArticlePage = () => {
           
           Proin fringilla massa in urna vestibulum, at rutrum nulla interdum. Quisque suscipit, ligula id volutpat vehicula, nisi orci convallis justo, ut consequat turpis erat id magna. Integer consequat dignissim ex, id tempus magna sodales sit amet. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.`,
           views: 1205,
+          hasPoll: true,
+          hasSurvey: true,
           relatedArticles: [
             {
               id: "1",
@@ -202,6 +205,54 @@ const NewsArticlePage = () => {
               isPlaying={isPlaying}
               toggleAudioPlayback={toggleAudioPlayback}
             />
+            
+            {article.hasPoll && (
+              <div className="px-6">
+                <ArticlePoll 
+                  id={`poll-${article.id}`}
+                  question="What's your opinion on the future of lithium prices?"
+                  options={[
+                    { id: "option1", text: "Will continue to fall", votes: 45 },
+                    { id: "option2", text: "Will stabilize soon", votes: 78 },
+                    { id: "option3", text: "Will rise by end of year", votes: 62 },
+                    { id: "option4", text: "Uncertain", votes: 23 }
+                  ]}
+                  totalVotes={208}
+                />
+              </div>
+            )}
+            
+            {article.hasSurvey && (
+              <div className="px-6 pb-6">
+                <ArticleSurvey 
+                  id={`survey-${article.id}`}
+                  title="Mining Industry Trends Survey"
+                  description="Help us understand your perspective on the mining industry"
+                  questions={[
+                    {
+                      id: "q1",
+                      question: "How confident are you in the mining sector's growth over the next year?",
+                      type: "radio",
+                      options: ["Very confident", "Somewhat confident", "Neutral", "Not very confident", "Not at all confident"],
+                      required: true
+                    },
+                    {
+                      id: "q2",
+                      question: "Which factors do you believe will most impact lithium prices? (Select all that apply)",
+                      type: "checkbox",
+                      options: ["EV demand", "Government policies", "New mining technologies", "Alternative battery technologies", "Global economic conditions"],
+                      required: true
+                    },
+                    {
+                      id: "q3",
+                      question: "What other mining-related topics would you like to see covered?",
+                      type: "text",
+                      required: false
+                    }
+                  ]}
+                />
+              </div>
+            )}
             
             {article.relatedArticles && article.relatedArticles.length > 0 && (
               <RelatedArticles articles={article.relatedArticles} />
