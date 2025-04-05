@@ -12,7 +12,7 @@ const ArticlePageLayout = ({ children }: ArticlePageLayoutProps) => {
   const navigate = useNavigate();
   
   return (
-    <div className="min-h-screen pt-[175px]">
+    <div className="min-h-screen pt-[165px] md:pt-[132px]">
       <div className="container mx-auto px-4 py-8">
         <Button 
           variant="ghost" 

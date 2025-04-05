@@ -250,9 +250,6 @@ const EnhancedNavbar = () => {
           />
         </div>
       )}
-      
-      {/* Page content spacer to prevent content from being hidden under fixed navbar */}
-      <div className="h-[165px] md:h-[132px]"></div>
     </div>
   );
 };

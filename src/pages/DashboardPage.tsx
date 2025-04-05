@@ -23,7 +23,7 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 pt-6">
+    <div className="container mx-auto px-4 py-8 pt-[180px] md:pt-[150px]">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Your Dashboard</h1>
         <Button asChild>
@@ -109,7 +109,7 @@ const DashboardPage = () => {
                 <CardHeader>
                   <CardTitle>Your Bookmarks</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="max-h-[600px] overflow-y-auto">
                   {bookmarks.length === 0 ? (
                     <p>You haven't bookmarked any articles yet.</p>
                   ) : (
@@ -156,7 +156,7 @@ const DashboardPage = () => {
                 <CardHeader>
                   <CardTitle>Read Later</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="max-h-[600px] overflow-y-auto">
                   {readLater.length === 0 ? (
                     <p>You don't have any articles saved to read later.</p>
                   ) : (
