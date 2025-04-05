@@ -23,7 +23,7 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 pt-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Your Dashboard</h1>
         <Button asChild>
@@ -34,7 +34,7 @@ const DashboardPage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <Tabs defaultValue="overview" className="w-full">
-            <TabsList>
+            <TabsList className="mb-2">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="bookmarks">Bookmarks</TabsTrigger>
               <TabsTrigger value="read-later">Read Later</TabsTrigger>
@@ -201,22 +201,22 @@ const DashboardPage = () => {
               <CardTitle className="text-lg">Quick Actions</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 gap-2">
-                <Button className="flex items-center" size="sm" variant="outline">
-                  <Bookmark className="mr-2 h-4 w-4" />
-                  View All Bookmarks
+              <div className="grid grid-cols-2 gap-3">
+                <Button className="flex items-center justify-start h-auto py-2 px-3 text-sm" size="sm" variant="outline">
+                  <Bookmark className="mr-2 h-4 w-4 flex-shrink-0" />
+                  <span className="truncate">View Bookmarks</span>
                 </Button>
-                <Button className="flex items-center" size="sm" variant="outline">
-                  <Clock className="mr-2 h-4 w-4" />
-                  Read Later List
+                <Button className="flex items-center justify-start h-auto py-2 px-3 text-sm" size="sm" variant="outline">
+                  <Clock className="mr-2 h-4 w-4 flex-shrink-0" />
+                  <span className="truncate">Read Later</span>
                 </Button>
-                <Button className="flex items-center" size="sm" variant="outline">
-                  <Layout className="mr-2 h-4 w-4" />
-                  Customize Layout
+                <Button className="flex items-center justify-start h-auto py-2 px-3 text-sm" size="sm" variant="outline">
+                  <Layout className="mr-2 h-4 w-4 flex-shrink-0" />
+                  <span className="truncate">Customize</span>
                 </Button>
-                <Button className="flex items-center" size="sm" variant="outline">
-                  <PieChart className="mr-2 h-4 w-4" />
-                  Reading Stats
+                <Button className="flex items-center justify-start h-auto py-2 px-3 text-sm" size="sm" variant="outline">
+                  <PieChart className="mr-2 h-4 w-4 flex-shrink-0" />
+                  <span className="truncate">Reading Stats</span>
                 </Button>
               </div>
             </CardContent>
