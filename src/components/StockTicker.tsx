@@ -53,7 +53,7 @@ const StockTicker = () => {
   }, []);
   
   return (
-    <div className="bg-gray-100 dark:bg-gray-800 py-2 overflow-hidden w-full">
+    <div className="sticky top-0 z-20 bg-gray-100 dark:bg-gray-800 py-2 overflow-hidden w-full">
       <div 
         className="flex items-center whitespace-nowrap"
         style={{ transform: `translateX(${position}px)` }}

@@ -33,7 +33,7 @@ const Navbar = () => {
   ];
 
   return (
-    <>
+    <div className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900">
       {/* Top navigation bar */}
       <div className="bg-navy-900 dark:bg-gray-900 text-white py-2">
         <div className="container mx-auto px-4 flex justify-between items-center">
@@ -130,7 +130,10 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-    </>
+      
+      {/* Page content spacer to prevent content from being hidden under fixed navbar */}
+      <div className="h-[175px]"></div>
+    </div>
   );
 };
 
