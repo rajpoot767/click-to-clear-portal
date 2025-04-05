@@ -13,19 +13,23 @@ const ArticlePageLayout = ({ children }: ArticlePageLayoutProps) => {
   const navigate = useNavigate();
   
   return (
-    <div className="container mx-auto px-4 py-8">
-      <StockTicker />
+    <div className="min-h-screen">
+      <div className="sticky top-0 z-10 bg-background border-b border-gray-200 dark:border-gray-800">
+        <StockTicker />
+      </div>
       
-      <Button 
-        variant="ghost" 
-        className="mb-4 flex items-center text-blue-600"
-        onClick={() => navigate(-1)}
-      >
-        <ArrowLeft size={16} className="mr-1" />
-        Go Back
-      </Button>
+      <div className="container mx-auto px-4 py-8">
+        <Button 
+          variant="ghost" 
+          className="mb-4 flex items-center text-blue-600"
+          onClick={() => navigate(-1)}
+        >
+          <ArrowLeft size={16} className="mr-1" />
+          Go Back
+        </Button>
 
-      {children}
+        {children}
+      </div>
     </div>
   );
 };

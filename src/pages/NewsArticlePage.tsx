@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
@@ -19,7 +18,7 @@ import AudioPlayer from "@/components/article/AudioPlayer";
 
 const NewsArticlePage = () => {
   const { id } = useParams<{ id: string }>();
-  const { addBookmark, removeBookmark, isBookmarked, addToReadLater, isInReadLater } = useBookmarks();
+  const { addBookmark, removeBookmark, isBookmarked } = useBookmarks();
   
   // Audio playback state
   const [isPlaying, setIsPlaying] = useState(false);
@@ -126,11 +125,7 @@ const NewsArticlePage = () => {
                 toggleAudioPlayback={toggleAudioPlayback}
               />
               
-              <ArticleActions 
-                article={article} 
-                isInReadLater={isInReadLater} 
-                addToReadLater={addToReadLater} 
-              />
+              <ArticleActions article={article} />
               
               <ArticleContent 
                 article={article}
