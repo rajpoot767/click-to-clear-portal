@@ -1,14 +1,10 @@
 
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
 import { useBookmarks } from "@/contexts/BookmarkContext";
-import StockTicker from "@/components/StockTicker";
 
-// Imported refactored components
+// Imported components
 import ArticleHeader from "@/components/article/ArticleHeader";
 import ArticleContent from "@/components/article/ArticleContent";
 import RelatedArticles from "@/components/article/RelatedArticles";
@@ -16,22 +12,29 @@ import ArticleSidebar from "@/components/article/ArticleSidebar";
 import ArticlePoll from "@/components/article/ArticlePoll";
 import ArticleSurvey from "@/components/article/ArticleSurvey";
 import TableOfContents from "@/components/article/TableOfContents";
-import BookmarkButton from "@/components/BookmarkButton";
+import ArticleLoadingState from "@/components/article/ArticleLoadingState";
+import ArticlePageLayout from "@/components/article/ArticlePageLayout";
+import ArticleActions from "@/components/article/ArticleActions";
+import AudioPlayer from "@/components/article/AudioPlayer";
 
 const NewsArticlePage = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
-  const { toast } = useToast();
   const { addBookmark, removeBookmark, isBookmarked, addToReadLater, isInReadLater } = useBookmarks();
   
   // Audio playback state
   const [isPlaying, setIsPlaying] = useState(false);
-  const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(null);
   
-  // Mock data for the selected news article
+  // Article data state
   const [article, setArticle] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   
+  // Custom hook for audio functionality
+  const { toggleAudioPlayback } = AudioPlayer({ 
+    article,
+    isPlaying,
+    setIsPlaying
+  });
+
   useEffect(() => {
     // In a real app, you would fetch the article data based on the ID
     // For this demo, we'll create mock data
@@ -81,18 +84,6 @@ const NewsArticlePage = () => {
     };
     
     fetchArticle();
-    
-    // Create an audio element for text-to-speech
-    const audio = new Audio();
-    setAudioElement(audio);
-    
-    return () => {
-      // Clean up audio when component unmounts
-      if (audio) {
-        audio.pause();
-        audio.src = '';
-      }
-    };
   }, [id]);
 
   const handleBookmark = () => {
@@ -100,10 +91,6 @@ const NewsArticlePage = () => {
     
     if (isBookmarked(article.id)) {
       removeBookmark(article.id);
-      toast({
-        title: "Bookmark removed",
-        description: "Article removed from your bookmarks"
-      });
     } else {
       addBookmark({
         id: article.id,
@@ -111,104 +98,20 @@ const NewsArticlePage = () => {
         imageUrl: article.imageUrl,
         category: article.category
       });
-      toast({
-        title: "Article bookmarked",
-        description: "You can find this article in your bookmarks"
-      });
-    }
-  };
-
-  const handleSaveForLater = () => {
-    if (!article) return;
-    
-    if (!isInReadLater(article.id)) {
-      addToReadLater({
-        id: article.id,
-        title: article.title
-      });
-      toast({
-        title: "Saved for later",
-        description: "You can find this article in your read later list"
-      });
-    } else {
-      toast({
-        title: "Already saved",
-        description: "This article is already in your read later list"
-      });
     }
   };
 
   const handleShare = () => {
-    navigator.clipboard.writeText(window.location.href).then(() => {
-      toast({
-        title: "Link copied to clipboard",
-        description: "Share this article with your network"
-      });
-    });
-  };
-  
-  const toggleAudioPlayback = () => {
-    if (!audioElement || !article) return;
-    
-    if (isPlaying) {
-      audioElement.pause();
-      setIsPlaying(false);
-    } else {
-      // In a real application, you would use a proper TTS API
-      // For this demo, we'll simulate audio playback
-      if (!audioElement.src) {
-        // This would normally be a request to a TTS API
-        // For demo purposes, let's just set a dummy audio source
-        const msg = new SpeechSynthesisUtterance();
-        msg.text = article.title + ". " + article.description;
-        window.speechSynthesis.speak(msg);
-      } else {
-        audioElement.play();
-      }
-      setIsPlaying(true);
-      
-      toast({
-        title: "Audio playback started",
-        description: "Listening to article audio version"
-      });
-    }
+    navigator.clipboard.writeText(window.location.href);
   };
 
-  if (loading) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="animate-pulse space-y-4">
-          <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
-          <div className="h-64 bg-gray-200 dark:bg-gray-700 rounded"></div>
-        </div>
-      </div>
-    );
-  }
-
-  if (!article) {
-    return (
-      <div className="container mx-auto px-4 py-12 text-center">
-        <h1 className="text-2xl font-bold mb-4">Article Not Found</h1>
-        <p className="mb-8">The article you are looking for does not exist or has been removed.</p>
-        <Button onClick={() => navigate("/")}>Return to Homepage</Button>
-      </div>
-    );
+  // Show loading or error state
+  if (loading || !article) {
+    return <ArticleLoadingState isLoading={loading} hasError={!loading && !article} />;
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <StockTicker />
-      
-      <Button 
-        variant="ghost" 
-        className="mb-4 flex items-center text-blue-600"
-        onClick={() => navigate(-1)}
-      >
-        <ArrowLeft size={16} className="mr-1" />
-        Go Back
-      </Button>
-
+    <ArticlePageLayout>
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="lg:w-2/3">
           <Card className="overflow-hidden border-gray-200 dark:border-gray-700">
@@ -223,16 +126,11 @@ const NewsArticlePage = () => {
                 toggleAudioPlayback={toggleAudioPlayback}
               />
               
-              <div className="mb-6 mt-6">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={handleSaveForLater}
-                  className={isInReadLater(article.id) ? "bg-blue-50 text-blue-600 border-blue-200" : ""}
-                >
-                  {isInReadLater(article.id) ? "Saved for Later" : "Save for Later"}
-                </Button>
-              </div>
+              <ArticleActions 
+                article={article} 
+                isInReadLater={isInReadLater} 
+                addToReadLater={addToReadLater} 
+              />
               
               <ArticleContent 
                 article={article}
@@ -301,7 +199,7 @@ const NewsArticlePage = () => {
           <ArticleSidebar />
         </div>
       </div>
-    </div>
+    </ArticlePageLayout>
   );
 };
 
