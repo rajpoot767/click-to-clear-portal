@@ -42,7 +42,7 @@ const BreakingNewsBanner = () => {
   if (!visible) return null;
   
   return (
-    <div className="bg-red-600 text-white px-4 py-2 relative animate-fade-in">
+    <div className="bg-red-600 dark:bg-red-700 text-white px-4 py-2 relative animate-fade-in">
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center">
           <span className="font-bold mr-3 text-sm sm:text-base">BREAKING:</span>
@@ -57,7 +57,7 @@ const BreakingNewsBanner = () => {
           <Button 
             variant="ghost" 
             size="icon" 
-            className="h-6 w-6 text-white hover:bg-red-700" 
+            className="h-6 w-6 text-white hover:bg-red-700 dark:hover:bg-red-800" 
             onClick={prevNews}
           >
             <ArrowLeft size={16} />
@@ -65,7 +65,7 @@ const BreakingNewsBanner = () => {
           <Button 
             variant="ghost" 
             size="icon" 
-            className="h-6 w-6 text-white hover:bg-red-700" 
+            className="h-6 w-6 text-white hover:bg-red-700 dark:hover:bg-red-800" 
             onClick={nextNews}
           >
             <ArrowRight size={16} />
@@ -73,7 +73,7 @@ const BreakingNewsBanner = () => {
           <Button 
             variant="ghost" 
             size="icon" 
-            className="h-6 w-6 text-white hover:bg-red-700" 
+            className="h-6 w-6 text-white hover:bg-red-700 dark:hover:bg-red-800" 
             onClick={() => setVisible(false)}
           >
             <X size={16} />
