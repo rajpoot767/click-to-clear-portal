@@ -26,7 +26,7 @@ const ArticlePage = () => {
   
   if (!article) {
     return (
-      <div className="container mx-auto px-4 py-12 text-center">
+      <div className="container mx-auto px-4 py-12 pt-[220px] md:pt-[185px] text-center">
         <h1 className="text-2xl font-bold mb-4">Article Not Found</h1>
         <p className="mb-8">The article you are looking for does not exist or has been removed.</p>
         <Link to="/">
@@ -42,7 +42,7 @@ const ArticlePage = () => {
     .slice(0, 5);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 pt-[220px] md:pt-[185px]">
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Main content */}
         <div className="flex-1">
