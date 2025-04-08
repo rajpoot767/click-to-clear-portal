@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Search, ChevronDown, User, Bell, LayoutDashboard, Menu, X } from "lucide-react";
@@ -72,7 +73,7 @@ const EnhancedNavbar = () => {
   const unreadCount = notifications.filter(n => !n.read).length;
 
   return (
-    <div className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'shadow-md' : ''}`}>
+    <div className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'shadow-md' : ''} bg-white dark:bg-gray-900`}>
       {/* Top navigation bar */}
       <div className="bg-navy-900 dark:bg-gray-900 text-white py-2">
         <div className="container mx-auto px-4 flex justify-between items-center">
