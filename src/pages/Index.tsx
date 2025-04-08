@@ -98,7 +98,7 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 pt-[165px] md:pt-[132px]">
+    <div className="min-h-screen bg-white dark:bg-gray-900 pt-[210px] md:pt-[180px]">
       <StockTicker />
       
       <main className="container mx-auto px-4 py-8">

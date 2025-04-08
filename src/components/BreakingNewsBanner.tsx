@@ -42,7 +42,7 @@ const BreakingNewsBanner = () => {
   if (!visible) return null;
   
   return (
-    <div className="bg-red-600 dark:bg-red-700 text-white px-4 py-2 relative animate-fade-in z-40">
+    <div className="bg-red-600 dark:bg-red-700 text-white px-4 py-2 relative animate-fade-in z-40 fixed top-[132px] md:top-[132px] left-0 right-0">
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center">
           <span className="font-bold mr-3 text-sm sm:text-base">BREAKING:</span>
