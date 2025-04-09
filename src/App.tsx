@@ -18,6 +18,7 @@ import NewsArticlePage from "./pages/NewsArticlePage";
 import ProfilePage from "./pages/ProfilePage";
 import DashboardPage from "./pages/DashboardPage";
 import DataInsights from "./pages/DataInsights";
+import ForYouPage from "./pages/ForYouPage";
 import BreakingNewsBanner from "./components/BreakingNewsBanner";
 
 const queryClient = new QueryClient();
@@ -43,6 +44,7 @@ const App = () => (
                   <Route path="/profile" element={<ProfilePage />} />
                   <Route path="/dashboard" element={<DashboardPage />} />
                   <Route path="/data-insights" element={<DataInsights />} />
+                  <Route path="/for-you" element={<ForYouPage />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </main>

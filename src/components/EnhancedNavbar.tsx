@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import SearchModal from "./SearchModal";
 import AuthModal from "./AuthModal";
 import ThemeToggle from "./ThemeToggle";
@@ -203,29 +204,36 @@ const EnhancedNavbar = () => {
       {/* Category navigation */}
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <div className="container mx-auto px-4">
-          <div className={`${mobileMenuOpen ? 'flex flex-col' : 'hidden md:flex'} overflow-x-auto scrollbar-hide`}>
-            <NavLinks />
-            
-            {/* All Categories dropdown */}
-            <div className="px-4 py-3 whitespace-nowrap text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
-              <DropdownMenu>
-                <DropdownMenuTrigger className="flex items-center gap-1 focus:outline-none">
-                  All Categories
-                  <ChevronDown size={16} />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-48 bg-white dark:bg-gray-800">
-                  {categories.map((category) => (
-                    <DropdownMenuItem key={category}>
-                      <Link to={`/category/${category.toLowerCase()}`} className="w-full">
-                        {category}
-                      </Link>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-            
-            <Link to="/data-insights" className="px-4 py-3 whitespace-nowrap text-white bg-blue-500 hover:bg-blue-600 ml-auto">Data & Insights</Link>
+          <div className={`${mobileMenuOpen ? 'flex flex-col' : 'hidden md:block'}`}>
+            <ScrollArea className="w-full whitespace-nowrap md:pb-0 pb-2">
+              <div className="flex md:flex-row flex-col">
+                <NavLinks />
+                
+                {/* All Categories dropdown */}
+                <div className="px-4 py-3 whitespace-nowrap text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="flex items-center gap-1 focus:outline-none">
+                      All Categories
+                      <ChevronDown size={16} />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start" className="w-48 bg-white dark:bg-gray-800">
+                      {categories.map((category) => (
+                        <DropdownMenuItem key={category}>
+                          <Link to={`/category/${category.toLowerCase()}`} className="w-full">
+                            {category}
+                          </Link>
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+                
+                <Link to="/data-insights" className="px-4 py-3 whitespace-nowrap text-white bg-blue-500 hover:bg-blue-600 ml-auto">Data & Insights</Link>
+                <Link to="/for-you" className="px-4 py-3 whitespace-nowrap text-blue-600 bg-blue-100 hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-300 dark:hover:bg-blue-800">
+                  <Badge className="bg-blue-500 mr-1">New</Badge> For You
+                </Link>
+              </div>
+            </ScrollArea>
           </div>
         </div>
       </div>

@@ -8,7 +8,8 @@ import {
   Globe, 
   LineChart, 
   BarChart3, 
-  PieChart
+  PieChart,
+  Sparkles
 } from "lucide-react";
 
 const NavLinks = () => {
@@ -21,20 +22,27 @@ const NavLinks = () => {
     { name: "Finance", path: "/category/finance", icon: LineChart },
     { name: "Markets", path: "/category/markets", icon: BarChart3 },
     { name: "Data Insights", path: "/data-insights", icon: PieChart },
+    { name: "For You", path: "/for-you", icon: Sparkles, isNew: true, isPrimary: true },
   ];
 
   return (
-    <div className="flex flex-col sm:flex-row gap-1 sm:gap-2">
+    <div className="flex overflow-x-auto scrollbar-hide pb-1 gap-1 sm:gap-2 no-scrollbar">
       {links.map((link) => {
         const isActive = location.pathname === link.path || 
                         (link.path !== '/' && location.pathname.startsWith(link.path));
+        
+        const isPrimary = link.isPrimary;
         
         return (
           <Link
             key={link.path}
             to={link.path}
-            className={`px-3 py-2 text-sm font-medium rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors relative flex items-center gap-1.5
-                      ${isActive ? 'text-blue-600 dark:text-blue-400 font-semibold' : 'text-gray-600 dark:text-gray-300'}`}
+            className={`px-3 py-2 text-sm font-medium rounded-md transition-colors relative flex items-center gap-1.5 whitespace-nowrap
+                      ${isActive 
+                        ? 'text-blue-600 dark:text-blue-400 font-semibold' 
+                        : isPrimary
+                          ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30'
+                          : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'}`}
           >
             {link.icon && <link.icon size={16} />}
             <span>{link.name}</span>
@@ -46,9 +54,6 @@ const NavLinks = () => {
             {isActive && (
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 dark:bg-blue-400 rounded-full"></span>
             )}
-
-            {/* Hover effect */}
-            <span className="absolute inset-0 bg-gray-200 dark:bg-gray-700 rounded-md opacity-0 group-hover:opacity-10 transition-opacity"></span>
           </Link>
         );
       })}
